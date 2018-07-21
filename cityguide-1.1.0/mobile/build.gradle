@@ -16,27 +16,27 @@ apply plugin: 'com.android.application'
 
 dependencies
         {
-            compile fileTree(dir: 'libs', include: ['*.jar'])
-            compile 'com.android.support:support-v4:21.0.3'
-            compile 'com.android.support:appcompat-v7:21.0.3'
-            compile 'com.android.support:cardview-v7:21.0.3'
-            compile 'com.android.support:recyclerview-v7:21.0.3'
-            compile 'com.google.android.gms:play-services:7.3.0'
-            compile 'com.google.maps.android:android-maps-utils:0.4'
-            compile 'com.afollestad:material-dialogs:0.6.3.4@aar'
-            compile 'com.bignerdranch.android:recyclerview-multiselect:0.1'
-            compile 'com.j256.ormlite:ormlite-android:4.48'
-            compile 'com.melnykov:floatingactionbutton:1.2.0'
-            compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
-            compile 'se.emilsjolander:StickyScrollViewItems:1.1.0'
-            compile 'com.android.support.constraint:constraint-layout:1.0.2'
+            //compile fileTree(dir: 'libs', include: ['*.jar'])
+            implementation 'com.android.support:support-v4:21.0.3'
+            implementation 'com.android.support:appcompat-v7:21.0.3'
+            implementation 'com.android.support:cardview-v7:21.0.3'
+            implementation 'com.android.support:recyclerview-v7:21.0.3'
+            implementation 'com.google.android.gms:play-services:7.3.0'
+            implementation 'com.google.maps.android:android-maps-utils:0.4'
+            implementation 'com.afollestad:material-dialogs:0.6.3.4@aar'
+            implementation 'com.bignerdranch.android:recyclerview-multiselect:0.1'
+            implementation 'com.j256.ormlite:ormlite-android:4.48'
+            implementation 'com.melnykov:floatingactionbutton:1.2.0'
+            implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
+            implementation 'se.emilsjolander:StickyScrollViewItems:1.1.0'
+            implementation 'com.android.support.constraint:constraint-layout:1.0.2'
         }
 
 
 android
         {
             compileSdkVersion 22
-            buildToolsVersion '25.0.0'
+            buildToolsVersion '27.0.3'
 
             defaultConfig
                     {
@@ -46,18 +46,6 @@ android
                         versionName "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
                     }
 
-            signingConfigs
-                    {
-                        release
-                                {
-                                    // passwords and alias are obtained via askForPasswords task
-                                    storeFile file("../${project.property('keystore.file')}")
-                                    storePassword ""
-                                    keyAlias ""
-                                    keyPassword ""
-                                }
-                    }
-
             buildTypes
                     {
                         debug
@@ -65,69 +53,6 @@ android
                                     versionNameSuffix "-debug"
                                 }
 
-                        release
-                                {
-                                    signingConfig signingConfigs.release
-                                    zipAlignEnabled true
-                                    minifyEnabled false
-                                    shrinkResources false
-                                    proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-                                }
                     }
 
-            applicationVariants.all
-                    {
-                        variant ->
-                            if (variant.buildType.name.equals("release")) {
-                                variant.outputs.each
-                                        {
-                                            output ->
-                                                def outputFile = output.outputFile
-                                                def date = new Date()
-                                                if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                                                    def fileName = outputFile.name.replace(
-                                                            "mobile",
-                                                            "cityguide-" + defaultConfig.versionName + "-" + defaultConfig.versionCode + "-" + date.format('yyyyMMdd'))
-                                                    output.outputFile = new File((String) outputFile.parent, (String) fileName)
-                                                }
-                                        }
-                            }
-                    }
-        }
-
-
-task askForPasswords <<
-        {
-            def storePass
-            def keyAlias
-            def keyPass
-
-            def keystorePropertiesFile = new File(project.property("keystore.properties"))
-
-            if (project.hasProperty("keystore.properties") && keystorePropertiesFile.exists()) {
-                println "Loading keystore passwords from property file..."
-                Properties properties = new Properties()
-                properties.load(new FileInputStream(keystorePropertiesFile))
-                storePass = properties['keystore.store.password']
-                keyAlias = properties['keystore.key.alias']
-                keyPass = properties['keystore.key.password']
-            } else {
-                println "Getting keystore passwords from user input..."
-                storePass = new String(System.console().readPassword("\nStore password: "))
-                keyAlias = new String(System.console().readLine("Key alias: "))
-                keyPass = new String(System.console().readPassword("Key password: "))
-            }
-
-            android.signingConfigs.release.storePassword = storePass
-            android.signingConfigs.release.keyAlias = keyAlias
-            android.signingConfigs.release.keyPassword = keyPass
-        }
-
-
-tasks.whenTaskAdded
-        {
-            theTask ->
-                if (theTask.name.equals("packageRelease")) {
-                    theTask.dependsOn "askForPasswords"
-                }
         }
