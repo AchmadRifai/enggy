@@ -23,7 +23,7 @@
 	<string name="menu_search">Cari</string>
 	<string name="menu_search_hint">Cari Tempat</string>
 
-	<string name="drawer_title"></string>
+	<string name="drawer_title">Tuban travel Guide</string>
 	<string name="drawer_category_all">Semua Tempat</string>
 	<string name="drawer_category_favorites">Favorit</string>
 	<string name="drawer_open">Buka navigasi</string>
@@ -42,7 +42,7 @@
 	<string name="dialog_about_title">Tentang</string>
 	<string name="dialog_about_message"><![CDATA["Aplikasi Tuban Travel Guide adalah aplikasi pemandu tempat
 	wisata di Kab. Tuban<br /><br />Developed by Enggy Heroedi (1412120096)<br/>
-	engggyheroedi07@gmail.com]]></string>
+	enggyheroedi07@gmail.com]]></string>
 
 	<string name="unit_meter">m</string>
 	<string name="unit_kilometer">km</string>
